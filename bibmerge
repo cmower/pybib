@@ -49,7 +49,6 @@ import BibTeX;
 import string;
 import sys;
 import optparse;
-import os
 
 ## parse switches
 usage = '''usage: %prog [options] [bibfiles]
@@ -102,9 +101,9 @@ def action(bib, filename):
 ## read the input files	
 bib = BibTeX.BibTeX();
 if args:
-        pathToFiles=os.getcwd()
+        
 	for f in args:
-                f = pathToFiles+'/'+f
+        
 		bib = BibTeX.BibTeX();
 		bib.parseFile(f);
 		action(bib, f);

@@ -36,7 +36,7 @@ import BibTeX;
 import string;
 import sys;
 import optparse;
-import os
+
 
 
 ## parse switches
@@ -81,9 +81,9 @@ def sortByDate(a, b):
 outbib = BibTeX.BibTeX();
 
 if args:
-        pathToFiles = os.getcwd()
+        
 	for f in args:
-                f = pathToFiles + '/' + f
+        
 		bib = BibTeX.BibTeX();
 		n = bib.parseFile(f);
 
