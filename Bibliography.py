@@ -57,15 +57,42 @@ class Bibliography:
 			self.filename = filename;
 		else:
 			# path is a local file
-			path = os.environ['BIBPATH'];
-			for p in string.split(path, os.pathsep):
-				f = os.path.join(p, filename);
-				if os.path.isfile(f):
-					break;
-			else:
-				raise NoSuchFile;
 
+
+                        
+                        # If this works -> carry on, else try my except
+                        # path = os.environ['BIBPATH'];
+                        # didFind=True
+			# for p in string.split(path, os.pathsep):
+			# 	f = os.path.join(p, filename);
+			# 	if os.path.isfile(f):
+			# 		break;
+			# else:
+			# 	# raise NoSuchFile;
+                        #         didFind = False
+                                
+                        # if not didFind:
+
+                        #         print f
+
+                        if filename[0]=='/':
+                                f = filename
+                        elif filename[0]=='.':
+                                f = os.getcwd()+filename[1:]
+                        elif filename[0]=='~':
+                                f = os.path.expanduser('~')+filename[1:]
+                        elif filename[:2]=='..':
+                                f = os.path.dirname(os.getcwd())+filename[2:]
+                        else:
+                                f = filename
+
+                        
 			fp = open(f, "r");
+
+                        # except:
+
+                        #         raise NoSuchFile
+                        
 			home = os.path.expanduser('~');
 			f2 = os.path.abspath(f);
 			common = os.path.commonprefix([home, f2]);
