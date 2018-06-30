@@ -37,6 +37,7 @@ import BibTeX;
 import string;
 import sys;
 import optparse;
+import os
 
 resolve = False;
 
@@ -66,7 +67,9 @@ if len(args) == 0 and sys.stdin.isatty():
 ## read the input files	
 bib = BibTeX.BibTeX();
 if args:
+        pathToFiles=os.getcwd()
 	for f in args:
+                f=pathToFiles+'/'+f
 		nbib = bib.parseFile(f, ignore=ignore);
 		if verbose:
 			sys.stderr.write( "%d entries read from %s\n" % (len(bib), f) );
