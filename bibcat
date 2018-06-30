@@ -52,7 +52,7 @@ p.add_option('--ignore', dest='ignore', action='store_true',
              help='ignore duplicate items');
 p.add_option('--nostrings', dest='dumpStrings', action='store_false',
              help='dump string definitions');
-p.add_option('-v', '--verbose', dest='verbose', action='store_true',
+p.add_option('-v', '--verbose', dest='verbose', action='store_false',
              help='print some extra information');
 p.add_option('--resolve', dest='resolve', action='store_true',
              help='resolve cross reference entries');
@@ -67,9 +67,7 @@ if len(args) == 0 and sys.stdin.isatty():
 ## read the input files	
 bib = BibTeX.BibTeX();
 if args:
-        pathToFiles=os.getcwd()
 	for f in args:
-                f=pathToFiles+'/'+f
 		nbib = bib.parseFile(f, ignore=ignore);
 		if verbose:
 			sys.stderr.write( "%d entries read from %s\n" % (len(bib), f) );
