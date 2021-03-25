@@ -28,7 +28,7 @@ biblist		list bibliography in non-BibTeX format
 
 bibmerge	merge bibliographies and attempt to remove duplicate entries
 
-bibsort		sort by date
+bibsort		sort by date, or key
 
 bibsummary	summary of number of entries by type
 
