@@ -18,8 +18,8 @@
 #     * Redistributions in binary form must reproduce the above copyright
 #       notice, this list of conditions and the following disclaimer in the
 #       documentation and/or other materials provided with the distribution.
-#     * The name of the copyright holder may not be used to endorse or 
-#	promote products derived from this software without specific prior 
+#     * The name of the copyright holder may not be used to endorse or
+#	promote products derived from this software without specific prior
 #	written permission.
 #
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS ``AS IS''
@@ -110,7 +110,7 @@ class BibEntry:
 			if not (string.capitalize(k) in keys):
 				missing.append(k);
 		return missing;
-			
+
 	#############################################################3
 	# get methods
 	#############################################################3
@@ -194,7 +194,7 @@ class BibEntry:
 
 		return "";
 
-	def getAuthorsSurnameList(self):			
+	def getAuthorsSurnameList(self):
 		if 'Author' in self.fieldDict:
 			l = self.fieldDict['Author'];
 			return map(self.surname, l);
@@ -229,11 +229,11 @@ class BibEntry:
 
 	# return initial dot sunrname
 
-	def getEditorsSurnameList(self):			
+	def getEditorsSurnameList(self):
 		if 'Editor' in self.fieldDict:
 			l = self.fieldDict['Editor'];
 			return map(self.surname, l);
-			
+
 	def getEditorsNames(self):
 		l = self.getEditorsSurnameList();
 		if not l:
@@ -274,7 +274,7 @@ class BibEntry:
 
 	def afterDate(self, date):
 		'''True if the entry occurs after the specified date'''
-		
+
 		if not date:
 			return True;
 		elif len(date) == 1:
@@ -290,7 +290,7 @@ class BibEntry:
 				return False;
 	def beforeDate(self, date):
 		'''True if the entry occurs before the specified date'''
-		
+
 		if not date:
 			return True;
 		elif len(date) == 1:
@@ -396,7 +396,7 @@ class BibEntry:
 					self.fieldDict['_month'] = self.monthdict[monthname];
 					#print >> sys.stderr, "_month 1 %d" % self.monthdict[monthname];
 					self.fieldDict[key] = None;
-						
+
 					return;
 				# handle extraneous like november in 'november 12-13'
 				if month.find(monthname) >= 0:
@@ -432,7 +432,7 @@ class BibEntry:
 							m = re.search(str, s);
 						if m:
 							return True;
-				
+
 		else:
 			# silently ignore search field if not present
 			if not(field in self.fieldDict):
@@ -512,7 +512,7 @@ class BibEntry:
 			c[i,0] = i
 		    for j in range(0,m+1):
 			c[0,j] = j
-			
+
 		    for i in range(1,n+1):
 			for j in range(1,m+1):
 			    x = c[i-1,j]+1
@@ -623,7 +623,7 @@ required_fields = {
   'article' :		['Author', 'Title', 'Journal', 'Year'],
   'book' :		['Author', 'Title', 'Publisher', 'Year'],
   'booklet' :		['Title'],
-  'inbook' :		['Author', 'Title', 'Chapter', 'Pages', 
+  'inbook' :		['Author', 'Title', 'Chapter', 'Pages',
   				'Publisher', 'Year'],
   'incollection' :	['Author', 'Title', 'Booktitle', 'Publisher', 'Year'],
   'inproceedings' :	['Author', 'Title', 'Booktitle', 'Year'],
@@ -644,10 +644,10 @@ opt_fields = {
   				'Note'],
   'inbook' :		['Editor', 'Volume', 'Series', 'Address', 'Edition',
   				'Month', 'Note'],
-  'incollection' :	['Editor', 'Volume', 'Number', 'Series', 'Type', 
+  'incollection' :	['Editor', 'Volume', 'Number', 'Series', 'Type',
   				'Chapter'  'Pages', 'Address', 'Edition',
 				'Month', 'Note'],
-  'inproceedings' :	['Editor', 'Pages', 'Organization', 'Publisher', 
+  'inproceedings' :	['Editor', 'Pages', 'Organization', 'Publisher',
   				'Address', 'Month', 'Note'],
   'manual' :		['Author', 'Organization', 'Address', 'Edition',
   				'Month', 'Year', 'Note'],
@@ -655,7 +655,7 @@ opt_fields = {
   				'Note'],
   'mastersthesis' :	['Address', 'Month', 'Note'],
   'phdthesis' :		['Address', 'Month', 'Note'],
-  'proceedings' :	['Editor', 'Publisher', 'Organization', 'Address', 
+  'proceedings' :	['Editor', 'Publisher', 'Organization', 'Address',
   				'Month', 'Note'],
   'techreport' :	['Type', 'Number', 'Address', 'Month', 'Note'],
   'unpublished' :	['Month', 'Year']
