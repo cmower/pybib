@@ -100,7 +100,7 @@ class BibTeXEntry(BibEntry.BibEntry):
 			# invoke the superclass
 			BibEntry.BibEntry.setField(self, field, value);
 		except AttributeError, err:
-			sys.stderr.write( "%15s: bad value <%s=%s>" % (self.getKey(), field, value));
+			sys.stderr.write( "%15s: bad value <%s=%s>\n" % (self.getKey(), field, value));
 
 class BibTeX(Bibliography.Bibliography):
 
