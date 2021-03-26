@@ -1,10 +1,10 @@
 # Defines two classes:
 #
 #  BibTexEntry, subclass of BibEntry, and provides all BibTeX specific methods such as
-#    writing an entry to file
+#	 writing an entry to file
 #
 #  BibTex, a subclass of Bibliography, and provides all BibTeX specific methods, in
-#    particular a parser.
+#	 particular a parser.
 
 # Copyright (c) 2007, Peter Corke
 #
@@ -12,12 +12,12 @@
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
-#     * Redistributions of source code must retain the above copyright
-#       notice, this list of conditions and the following disclaimer.
-#     * Redistributions in binary form must reproduce the above copyright
-#       notice, this list of conditions and the following disclaimer in the
-#       documentation and/or other materials provided with the distribution.
-#     * The name of the copyright holder may not be used to endorse or 
+#	  * Redistributions of source code must retain the above copyright
+#		notice, this list of conditions and the following disclaimer.
+#	  * Redistributions in binary form must reproduce the above copyright
+#		notice, this list of conditions and the following disclaimer in the
+#		documentation and/or other materials provided with the distribution.
+#	  * The name of the copyright holder may not be used to endorse or 
 #	promote products derived from this software without specific prior 
 #	written permission.
 #
@@ -44,7 +44,7 @@ class BibTeXEntry(BibEntry.BibEntry):
 
 	# write a BibTex format entry
 	def write(self, file=sys.stdout, stringdict=None):
-		file.write( "@%s{%s,\n"  % (self.getRefType(), self.getKey()) );
+		file.write( "@%s{%s,\n"	 % (self.getRefType(), self.getKey()) );
 		count = 0
 		for rk in self.fieldDict:
 			count += 1;
@@ -125,7 +125,7 @@ class BibTeX(Bibliography.Bibliography):
 
 	def display(self):
 		for be in self:
-		        be.display()
+				be.display()
 
 	def write(self, file=sys.stdout, resolve=0):
 		if resolve:
@@ -134,11 +134,11 @@ class BibTeX(Bibliography.Bibliography):
 			dict = None;
 
 		for be in self:
-		        be.write(file, dict)
+				be.write(file, dict)
 
 	def writeStrings(self, file=sys.stdout):
 		for abbrev, value in self.abbrevDict.items():
-		        file.write("@string{ %s = {%s} }\n" % (abbrev, value) );
+				file.write("@string{ %s = {%s} }\n" % (abbrev, value) );
 
 	# resolve BibTeX's cross reference capability
 	def resolveCrossRef(self):
@@ -263,13 +263,13 @@ class BibTeX(Bibliography.Bibliography):
 				if self.type == self.t_ENTRY:
 					str = "@ %s" % self.val;
 				elif self.type == self.t_DELIM_R:
-					str = "  }";
+					str = "	 }";
 				elif self.type == self.t_STRING:
 					str = "<%s>" % self.val;
 				elif self.type == self.t_EQUAL:
-					str = "  EQUAL";
+					str = "	 EQUAL";
 				elif self.type == self.t_COMMA:
-					str = "  COMMA";
+					str = "	 COMMA";
 				else:
 					str = "BAD TOKEN (%d) <%s>" % (self.type, self.val);
 				return str;
@@ -423,7 +423,7 @@ class BibTeX(Bibliography.Bibliography):
 						ts = self.tok.next();
 						if not ts.isstring():
 							raise SyntaxError, self.tok.lex.lineNum;
-						#print >> sys.stderr, "  ", tf.val, " := ", ts.val;
+						#print >> sys.stderr, "	 ", tf.val, " := ", ts.val;
 						be.setField(tf.val, strstrip(ts.val));
 
 						# if it was an abbrev in the file, put it in the
