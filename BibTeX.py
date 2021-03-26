@@ -78,9 +78,9 @@ class BibTeXEntry(BibEntry.BibEntry):
 
 			# add comma to all but last fields
 			# if count < len(self.fieldDict):
-				# file.write(",\n");
+			# 	file.write(",\n");
 			# else:
-			#	file.write("\n");
+			# 	file.write("\n");
 		file.write("}\n\n");
 
 
