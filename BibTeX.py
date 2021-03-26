@@ -56,7 +56,7 @@ class BibTeXEntry(BibEntry.BibEntry):
 
 			# generate the entry
 			value = self.fieldDict[rk];
-			file.write("    %s = " % rk );
+			file.write("	%s = " % rk.lower() );
 
 			if rk in ['Author', 'Editor']:
 				file.write("{%s}" % " and ".join(value) );
@@ -71,13 +71,16 @@ class BibTeXEntry(BibEntry.BibEntry):
 				if value in self.bibliography.abbrevDict:
 					file.write("%s" % value );
 				else:
-					file.write("{%s}" % value );
+					file.write("{%s}" % value )
+
+			# add comma to all fields
+			file.write(",\n");
 
 			# add comma to all but last fields
-			if count < len(self.fieldDict):
-				file.write(",\n");
-			else:
-				file.write("\n");
+			# if count < len(self.fieldDict):
+				# file.write(",\n");
+			# else:
+			#	file.write("\n");
 		file.write("}\n\n");
 
 
