@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python2
 #
 # Display a list of authors and their occurrence in the bibfiles
 #
