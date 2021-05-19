@@ -71,10 +71,10 @@ class BibEntry:
 		if month:
 			str += ", " + month;
 			if year > 0:
-				str += " " + `year`;
+				str += " " + 'year';
 		else:
 			if year > 0:
-				str += ", " + `year`;
+				str += ", " + 'year';
 		str += '.';
 		return str;
 
