@@ -15,9 +15,9 @@
 #     * Redistributions in binary form must reproduce the above copyright
 #       notice, this list of conditions and the following disclaimer in the
 #       documentation and/or other materials provided with the distribution.
-#     * The name of the copyright holder may not be used to endorse or 
-#	promote products derived from this software without specific prior 
-#	written permission.
+#     * The name of the copyright holder may not be used to endorse or
+#       promote products derived from this software without specific prior
+#       written permission.
 #
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS ``AS IS''
 # AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -42,153 +42,153 @@ NoSuchFile = "No such file";
 
 class Bibliography:
 
-	def __init__(self):
-		self.keyList = [];
-		self.abbrevDict = {}
+    def __init__(self):
+        self.keyList = [];
+        self.abbrevDict = {}
 
-	def open(self, filename):
-		if filename == '-':
-			self.filename = "stdin";
-			return sys.stdin;
-		urlbits = urlparse.urlparse('~/lib/bib/z.bib');
-		if urlbits[0]:
-			# path is a URL
-			fp = urllib.urlopen(filename);
-			self.filename = filename;
-		else:
-			# path is a local file
-
-
-                        
-                        # If this works -> carry on, else try my except
-                        # path = os.environ['BIBPATH'];
-                        # didFind=True
-			# for p in string.split(path, os.pathsep):
-			# 	f = os.path.join(p, filename);
-			# 	if os.path.isfile(f):
-			# 		break;
-			# else:
-			# 	# raise NoSuchFile;
-                        #         didFind = False
-                                
-                        # if not didFind:
-
-                        #         print f
-
-                        if filename[0]=='/':
-                                f = filename
-                        elif filename[0]=='.':
-                                f = os.getcwd()+filename[1:]
-                        elif filename[0]=='~':
-                                f = os.path.expanduser('~')+filename[1:]
-                        elif filename[:2]=='..':
-                                f = os.path.dirname(os.getcwd())+filename[2:]
-                        else:
-                                f = filename
-
-                        
-			fp = open(f, "r");
-
-                        # except:
-
-                        #         raise NoSuchFile
-                        
-			home = os.path.expanduser('~');
-			f2 = os.path.abspath(f);
-			common = os.path.commonprefix([home, f2]);
-			if common:
-				self.filename = "~" + f2[len(common):]
-			else:
-				self.filename = f;
-
-			return fp;
-
-	def close(self, fp):
-		fp.close();
-
-	# resolve all abbreviations found in the value fields of all entries
-	def resolveAbbrev(self):
-		#print >> sys.stderr, len(self.abbrevDict);
-		for be in self:
-			for f in be:
-				v = be.getField(f);
-				if isinstance(v,str): 
-					if v in self.abbrevDict:
-						if self.abbrevDict[v]:
-							be.setField(f, self.abbrevDict[v]);
-
-	def insertEntry(self, be, ignore=False):
-		#print >> sys.stderr, "inserting key ", be.getKey()
-		# should check to see if be is of BibEntry type
-		key = be.getKey();
-		if key in [x.key for x in self.keyList]:
-			if not ignore:
-				print >> sys.stderr, "key %s already in dictionary" % (key)
-			return False;
-		self.keyList.append(be);
-		return True;
-
-	def insertAbbrev(self, abbrev, value):
-		#print >> sys.stderr, "inserting abbrev ", abbrev
-		if abbrev in self.abbrevDict:
-			#print >> sys.stderr, "abbrev %s already in list" % (abbrev)
-			return False;
-		self.abbrevDict[abbrev] = value;
-		#be.brief();
-		return True;
-
-	def __repr__(self):
-		print >> sys.stderr
-
-	def brief(self):
-		for be in self:
-			be.brief();
-
-	def getFilename(self):
-		return self.filename;
-
-	def getAbbrevs(self):
-		return self.abbrevDict;
+    def open(self, filename):
+        if filename == '-':
+            self.filename = "stdin";
+            return sys.stdin;
+        urlbits = urlparse.urlparse('~/lib/bib/z.bib');
+        if urlbits[0]:
+            # path is a URL
+            fp = urllib.urlopen(filename);
+            self.filename = filename;
+        else:
+            # path is a local file
 
 
-	def display(self):
-		for be in self:
-			be.display();
-			print >> sys.stderr
 
-	def __contains__(self, key):
-		return key in [x.key for x in self.keyList];
+            # If this works -> carry on, else try my except
+            # path = os.environ['BIBPATH'];
+            # didFind=True
+            # for p in string.split(path, os.pathsep):
+            #       f = os.path.join(p, filename);
+            #       if os.path.isfile(f):
+            #               break;
+            # else:
+            #       # raise NoSuchFile;
+            #         didFind = False
 
-	def __getitem__(self, i):
-		if type(i) is str:
-			index = [x.key for x in self.keyList].index(i);
-			return self.keyList[index];
-		elif type(i) is int:
-			return self.keyList[i];
-		else:
-			raise;
+            # if not didFind:
 
-	def __len__(self):
-		return len(self.keyList);
+            #         print f
 
-
-	def sort(self, sortfunc):
-		# turn the dictionary of entries into a list so we can sort it
-		self.keyList.sort(sortfunc);
+            if filename[0]=='/':
+                f = filename
+            elif filename[0]=='.':
+                f = os.getcwd()+filename[1:]
+            elif filename[0]=='~':
+                f = os.path.expanduser('~')+filename[1:]
+            elif filename[:2]=='..':
+                f = os.path.dirname(os.getcwd())+filename[2:]
+            else:
+                f = filename
 
 
-	# return list of all bibentry's that match the search spec
-	def search(self, key, str, type="all", caseSens=0):
-		if str == '*':
-			return self.keyList;
-		
-		result = [];
-		if string.lower(type) == "all":
-			for be in self:
-				if be.search(key, str, caseSens):
-					result.append(be);
-		else:
-			for be in self:
-				if be.isRefType(type) and be.search(key, str, caseSens):
-					result.append(be);
-		return result;
+            fp = open(f, "r");
+
+            # except:
+
+            #         raise NoSuchFile
+
+            home = os.path.expanduser('~');
+            f2 = os.path.abspath(f);
+            common = os.path.commonprefix([home, f2]);
+            if common:
+                self.filename = "~" + f2[len(common):]
+            else:
+                self.filename = f;
+
+            return fp;
+
+    def close(self, fp):
+        fp.close();
+
+    # resolve all abbreviations found in the value fields of all entries
+    def resolveAbbrev(self):
+        #print >> sys.stderr, len(self.abbrevDict);
+        for be in self:
+            for f in be:
+                v = be.getField(f);
+                if isinstance(v,str):
+                    if v in self.abbrevDict:
+                        if self.abbrevDict[v]:
+                            be.setField(f, self.abbrevDict[v]);
+
+    def insertEntry(self, be, ignore=False):
+        #print >> sys.stderr, "inserting key ", be.getKey()
+        # should check to see if be is of BibEntry type
+        key = be.getKey();
+        if key in [x.key for x in self.keyList]:
+            if not ignore:
+                print >> sys.stderr, "key %s already in dictionary" % (key)
+            return False;
+        self.keyList.append(be);
+        return True;
+
+    def insertAbbrev(self, abbrev, value):
+        #print >> sys.stderr, "inserting abbrev ", abbrev
+        if abbrev in self.abbrevDict:
+            #print >> sys.stderr, "abbrev %s already in list" % (abbrev)
+            return False;
+        self.abbrevDict[abbrev] = value;
+        #be.brief();
+        return True;
+
+    def __repr__(self):
+        print >> sys.stderr
+
+    def brief(self):
+        for be in self:
+            be.brief();
+
+    def getFilename(self):
+        return self.filename;
+
+    def getAbbrevs(self):
+        return self.abbrevDict;
+
+
+    def display(self):
+        for be in self:
+            be.display();
+            print >> sys.stderr
+
+    def __contains__(self, key):
+        return key in [x.key for x in self.keyList];
+
+    def __getitem__(self, i):
+        if type(i) is str:
+            index = [x.key for x in self.keyList].index(i);
+            return self.keyList[index];
+        elif type(i) is int:
+            return self.keyList[i];
+        else:
+            raise;
+
+    def __len__(self):
+        return len(self.keyList);
+
+
+    def sort(self, sortfunc):
+        # turn the dictionary of entries into a list so we can sort it
+        self.keyList.sort(sortfunc);
+
+
+    # return list of all bibentry's that match the search spec
+    def search(self, key, str, type="all", caseSens=0):
+        if str == '*':
+            return self.keyList;
+
+        result = [];
+        if string.lower(type) == "all":
+            for be in self:
+                if be.search(key, str, caseSens):
+                    result.append(be);
+        else:
+            for be in self:
+                if be.isRefType(type) and be.search(key, str, caseSens):
+                    result.append(be);
+        return result;
