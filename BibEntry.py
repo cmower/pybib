@@ -609,7 +609,7 @@ allfields = ('_Reftype', 'Address', 'Author', 'Booktitle', 'Chapter', 'Edition',
          'Series', 'Title', 'Type', 'Volume',
          'Year', 'Note', 'Code', 'Url', 'Crossref', 'Annote', 'Abstract', 'Date-added', 'Date-modified', 'Read',
          # Added by C. E. Mower, 2021
-         'Doi', 'Numpages', 'Issn', 'Location'); # last line added by C. E. Mower, 2021
+         'Isbn', 'Doi', 'Numpages', 'Issn', 'Location', 'Isbn'); # last line added by C. E. Mower, 2021
 
 # list of all reference types
 alltypes = ('article', 'book', 'booklet', 'inbook', 'incollection',
