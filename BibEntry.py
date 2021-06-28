@@ -4,7 +4,7 @@
 #
 # TODO:
 #    __repr__ method needs to do a better job depending on the reference type, similar
-#        logic is required in bib2html (but it's not their either...)
+#	 logic is required in bib2html (but it's not their either...)
 #
 
 # Copyright (c) 2007, Peter Corke
@@ -14,10 +14,10 @@
 # modification, are permitted provided that the following conditions are met:
 #
 #     * Redistributions of source code must retain the above copyright
-#       notice, this list of conditions and the following disclaimer.
+#	notice, this list of conditions and the following disclaimer.
 #     * Redistributions in binary form must reproduce the above copyright
-#       notice, this list of conditions and the following disclaimer in the
-#       documentation and/or other materials provided with the distribution.
+#	notice, this list of conditions and the following disclaimer in the
+#	documentation and/or other materials provided with the distribution.
 #     * The name of the copyright holder may not be used to endorse or
 #	promote products derived from this software without specific prior
 #	written permission.
@@ -43,7 +43,7 @@ import re;
 #BadRefType = "Bad reference type";
 
 class BibEntry:
-	fieldDict = {};
+        fieldDict = {};
 	verbose = 0;
 	bibliography = {};
 
@@ -250,7 +250,7 @@ class BibEntry:
 
 	def getBooktitle(self):
 		if 'Booktitle' in self.fieldDict:
-			return  self.fieldDict['Booktitle'];
+			return	self.fieldDict['Booktitle'];
 		else:
 			return "";
 
@@ -330,7 +330,7 @@ class BibEntry:
 		'september' : 9,
 		'october' : 10,
 		'november' : 11,
-		'december' : 12  };
+		'december' : 12	 };
 
 	def getMonthName(self):
 		monthNames = (
@@ -366,6 +366,12 @@ class BibEntry:
 		self.fieldDict['Type'] = value;
 
 	def setField(self, key, value):
+
+                def stripzero(str):
+                        while str[0] == '0':
+                                str = str[1:]
+                        return str
+                
 		key = key.capitalize();
 		if not (key in allfields):
 			raise AttributeError, "bad field <%s> [%s]" % (key, self.getKey());
@@ -392,21 +398,34 @@ class BibEntry:
 			month = mogrify(value);
 			for monthname in self.monthdict:
 				# handle month abbreviations, eg. nov in november
+
 				if monthname.find(month) >= 0:
 					self.fieldDict['_month'] = self.monthdict[monthname];
 					#print >> sys.stderr, "_month 1 %d" % self.monthdict[monthname];
 					self.fieldDict[key] = None;
-
 					return;
+                                
 				# handle extraneous like november in 'november 12-13'
 				if month.find(monthname) >= 0:
 					self.fieldDict['_month'] = self.monthdict[monthname];
 					#print >> sys.stderr, "_month 2 %d" % self.monthdict[monthname];
 					return;
+                        if isinstance(value, str):
+                                if all([s.isdigit() for s in value]):
+                                        # value is str && all characters are digits
+                                        ivalue = int(stripzero(value))
+                                        if 1 <= ivalue <= 12:
+                                                self.fieldDict['_month'] = ivalue
+                                                return
+
+                                
 			raise AttributeError, "bad month [%s]" % self.getKey();
+                elif key == 'Day':
+                        # print >> sys.stderr, "----------------------------here:", value, key, type(value)
+                        self.fieldDict[key] = int(stripzero(value));
 		else:
 			self.fieldDict[key] = value;
-		#print >> sys.stderr, "<%s> := <%s>\n" % (key, value)
+		# print >> sys.stderr, "<%s> := <%s>\n" % (key, value)
 
 
 
@@ -586,7 +605,7 @@ class BibEntry:
 		return 1;
 
 # we adopt the convention that a numeric value of -1 means not provided,
-# so here we match two quantites where either or both is not provided.  Only
+# so here we match two quantites where either or both is not provided.	Only
 # return false if both numbers are provided, and they are not equal, otherwise
 # give the benefit of the doubt and return true.
 def fmatch(n1, n2):
@@ -606,10 +625,10 @@ def mogrify(s):
 allfields = ('_Reftype', 'Address', 'Author', 'Booktitle', 'Chapter', 'Edition',
 	     'Editor', 'Howpublished', 'Institution', 'Journal', 'Month',
 	     'Number', 'Organization', 'Pages', 'Publisher', 'School',
-         'Series', 'Title', 'Type', 'Volume',
-         'Year', 'Note', 'Code', 'Url', 'Crossref', 'Annote', 'Abstract', 'Date-added', 'Date-modified', 'Read',
-         # Added by C. E. Mower, 2021
-         'Isbn', 'Doi', 'Numpages', 'Issn', 'Location', 'Isbn'); # last line added by C. E. Mower, 2021
+	 'Series', 'Title', 'Type', 'Volume',
+	 'Year', 'Note', 'Code', 'Url', 'Crossref', 'Annote', 'Abstract', 'Date-added', 'Date-modified', 'Read',
+	 # Added by C. E. Mower, 2021
+	 'Isbn', 'Doi', 'Numpages', 'Issn', 'Location', 'Isbn', 'Day'); # last line added by C. E. Mower, 2021
 
 # list of all reference types
 alltypes = ('article', 'book', 'booklet', 'inbook', 'incollection',
@@ -626,11 +645,11 @@ required_fields = {
   'book' :		['Author', 'Title', 'Publisher', 'Year'],
   'booklet' :		['Title'],
   'inbook' :		['Author', 'Title', 'Chapter', 'Pages',
-  				'Publisher', 'Year'],
+				'Publisher', 'Year'],
   'incollection' :	['Author', 'Title', 'Booktitle', 'Publisher', 'Year'],
   'inproceedings' :	['Author', 'Title', 'Booktitle', 'Year'],
   'manual' :		['Title'],
-  'misc' : 		[],
+  'misc' :		[],
   'mastersthesis' :	['Author', 'Title', 'School', 'Year'],
   'phdthesis' :		['Author', 'Title', 'School', 'Year'],
   'proceedings' :	['Title', 'Year'],
@@ -641,24 +660,24 @@ required_fields = {
 opt_fields = {
   'article' :		['Volume', 'Number', 'Pages', 'Month', 'Note'],
   'book' :		['Editor', 'Volume', 'Number', 'Series', 'Address',
-  				'Edition', 'Month', 'Note'],
+				'Edition', 'Month', 'Note'],
   'booklet' :		['Author', 'Howpublished', 'Address', 'Month', 'Year',
-  				'Note'],
+				'Note'],
   'inbook' :		['Editor', 'Volume', 'Series', 'Address', 'Edition',
-  				'Month', 'Note'],
+				'Month', 'Note'],
   'incollection' :	['Editor', 'Volume', 'Number', 'Series', 'Type',
-  				'Chapter'  'Pages', 'Address', 'Edition',
+				'Chapter'  'Pages', 'Address', 'Edition',
 				'Month', 'Note'],
   'inproceedings' :	['Editor', 'Pages', 'Organization', 'Publisher',
-  				'Address', 'Month', 'Note'],
+				'Address', 'Month', 'Note'],
   'manual' :		['Author', 'Organization', 'Address', 'Edition',
-  				'Month', 'Year', 'Note'],
+				'Month', 'Year', 'Note'],
   'misc' :		['Title', 'Author', 'Howpublished', 'Month', 'Year',
-  				'Note'],
+				'Note'],
   'mastersthesis' :	['Address', 'Month', 'Note'],
   'phdthesis' :		['Address', 'Month', 'Note'],
   'proceedings' :	['Editor', 'Publisher', 'Organization', 'Address',
-  				'Month', 'Note'],
+				'Month', 'Note'],
   'techreport' :	['Type', 'Number', 'Address', 'Month', 'Note'],
   'unpublished' :	['Month', 'Year']
 };

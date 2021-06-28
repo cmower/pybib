@@ -56,6 +56,8 @@ class BibTeXEntry(BibEntry.BibEntry):
 
 			# generate the entry
 			value = self.fieldDict[rk]
+                        if rk.lower() == 'doi':
+                                value = value.lstrip('https://doi.org/')
 			file.write("	%s = " % rk.lower() )
 
 			if rk in ['Author', 'Editor']:
@@ -64,8 +66,12 @@ class BibTeXEntry(BibEntry.BibEntry):
 				if value:
 					file.write('"%s"' % value )
 				else:
-					value = self.getMonthName()
-					file.write("%s" % value[0:3].lower() )
+					# value = self.getMonthName()
+                                        value = self.getMonth()  # some compilers require integer to ensure ordering is correct
+					# file.write("%s" % value[0:3].lower() )
+                                        file.write('"%d"' % value)
+                        elif rk == 'Day':
+                                file.write('"%d"' % value)
 			else:
 				# is it an abbrev?
 				if value in self.bibliography.abbrevDict:
