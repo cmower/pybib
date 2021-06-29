@@ -82,7 +82,8 @@ class HBibEntry(BibEntry.BibEntry):
 			'Address', 'Institution']:
 
 			if k in self.fieldDict:
-				append( self.fieldDict[k].strip('"') + ', ' )
+                                # need str since some values are int's
+				append(str(self.fieldDict[k]).strip('"') + ', ' )
 		eds = self.getEditorsNames()
 		if eds:
 			append("eds. " + eds + ', ')
