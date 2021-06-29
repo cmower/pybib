@@ -306,17 +306,11 @@ class BibEntry:
 				return False;
 
 	def getYear(self):
-		if '_year' in self.fieldDict:
-			return self.fieldDict['_year'];
-		else:
-			return -1;
+                return self.fieldDict.get('_year', -1)
 
 	# return month ordinal in range 1 to 12
 	def getMonth(self):
-		if '_month' in self.fieldDict:
-			return self.fieldDict['_month'];
-		else:
-			return -1;
+                return self.fieldDict('_month', -1)
 
 	monthdict = {
 		'january' : 1,
