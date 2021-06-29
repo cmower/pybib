@@ -608,11 +608,20 @@ class BibEntry:
 
         # Other methods, added by C. E. Mower, 2021
 
+        def getDoi(self):
+                return self.fieldDict.get('Doi', -1)
+
         def hasDoi(self):
                 return 'Doi' in self.fieldDict.keys()
 
         def needsDoi(self):
                 return self.getRefType() in doireqtypes
+
+        def hasTitle(self):
+                return self.getTitle() != ''
+
+        def hasField(self, field):
+                return field.capitalize() in self.fieldDict.keys()
 
 # we adopt the convention that a numeric value of -1 means not provided,
 # so here we match two quantites where either or both is not provided.	Only
