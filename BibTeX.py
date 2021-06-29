@@ -44,7 +44,14 @@ class BibTeXEntry(BibEntry.BibEntry):
 
 	# write a BibTex format entry
 	def write(self, file=sys.stdout, stringdict=None):
-		file.write( "@%s{%s,\n"	 % (self.getRefType(), self.getKey()) )
+                
+                bibtex_key = self.getKey()
+
+                # Throw warning when doi does not exist
+                if self.needsDoi() and (not self.hasDoi()):
+                        print >> sys.stderr, "%15s: has no doi!" % bibtex_key
+
+		file.write( "@%s{%s,\n"	 % (self.getRefType(), bibtex_key) )
 		count = 0
 		for rk in self.fieldDict:
 			count += 1
