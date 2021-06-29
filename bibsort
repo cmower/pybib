@@ -36,7 +36,7 @@ import BibTeX;
 import string;
 import sys;
 import optparse;
-
+import datetime
 
 
 ## parse switches
@@ -64,21 +64,16 @@ sortReturn = -1 if reverseSort else 1;
 
 def sortByDate(a, b):
 	# On input a and b are BibEntry objects
-	ay = a.getYear();
-	by = b.getYear();
-	if ay > by:
-		return -sortReturn;
-	elif ay < by:
-		return sortReturn;
-	else:
-		am = a.getMonth();
-		bm = b.getMonth();
-		if am > bm:
-			return -sortReturn;
-		elif am < bm:
-			return sortReturn;
-		else:
-			return 0;
+
+        def toDate(x):
+                def handle(y):
+                        return y if y > 0 else 1
+                return datetime.date(handle(x.getYear()), handle(x.getMonth()), handle(x.getDay()))
+
+        if toDate(a) > toDate(b):
+                return -sortReturn
+        else:
+                return sortReturn
 
 def sortByKey(a, b):
     if a.getKey() > b.getKey():
