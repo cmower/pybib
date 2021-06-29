@@ -608,6 +608,14 @@ class BibEntry:
 			return 0;
 		return 1;
 
+        # Other methods, added by C. E. Mower, 2021
+
+        def hasDoi(self):
+                return 'doi' in map(lambda x: x.lower(), self.fieldDict.keys())
+
+        def needsDoi(self):
+                return self.getRefType() in doireqtypes
+
 # we adopt the convention that a numeric value of -1 means not provided,
 # so here we match two quantites where either or both is not provided.	Only
 # return false if both numbers are provided, and they are not equal, otherwise
