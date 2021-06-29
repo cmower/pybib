@@ -422,9 +422,11 @@ class BibEntry:
 
                                 
 			raise AttributeError, "bad month [%s]" % self.getKey();
-                elif key == 'Day':
-                        # print >> sys.stderr, "----------------------------here:", value, key, type(value)
-                        self.fieldDict[key] = int(stripzero(value));
+                elif key == 'Day' or key == 'Number':
+                        value = stripzero(value)
+                        if value.isdigit():
+                                value = int(value)
+                        self.fieldDict[key] = value
 		else:
 			self.fieldDict[key] = value;
 		# print >> sys.stderr, "<%s> := <%s>\n" % (key, value)
