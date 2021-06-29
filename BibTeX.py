@@ -82,7 +82,7 @@ class BibTeXEntry(BibEntry.BibEntry):
 			else:
 				# is it an abbrev?
 				if value in self.bibliography.abbrevDict:
-					file.write("%s" % value )
+					file.write("{%s}" % value )
 				else:
 					file.write('{%s}' % value )
 
