@@ -2,6 +2,8 @@
 
 Pybib provides a set of command line utilities (written in Python) to check, merge, sort, filter, and convert BibTeX files. Original code by [Peter Corke](http://petercorke.com/wordpress/) hosted at [CTAN](https://ctan.org/pkg/pybib?lang=en). This repository contains modified code by C. E. Mower.
 
+The code requires a Python 2 interpreter.
+
 ## Original README by Peter Corke
 
 BibEntry.py	a general class for a bibliographic entry
