@@ -49,3 +49,4 @@ The package builds on the author’s experience writing the earlier tkbibtex; it
 
 1. `$ git clone https://github.com/cmower/pybib.git`
 1. On Linux/Mac add `export BIBPATH="/path/to/pybib"; export PATH=$PATH:$BIBPATH` to your `.bashrc`/`.bash_profile`. If you use Windows set the environment variables `BIBPATH` and update your `PATH` variable to contain `BIBPATH` (untested for Windows).
+1. `$ pip2 install doi2bib`

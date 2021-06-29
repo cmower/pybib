@@ -1,0 +1,161 @@
+#! /usr/bin/env python2
+#
+# Clean bib entries.
+#
+
+# TODO:
+# * Handle arXiv articles
+
+# Copyright (c) 2021, Christopher E. Mower
+#
+# All rights reserved.
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#
+#     * Redistributions of source code must retain the above copyright
+#       notice, this list of conditions and the following disclaimer.
+#     * Redistributions in binary form must reproduce the above copyright
+#       notice, this list of conditions and the following disclaimer in the
+#       documentation and/or other materials provided with the distribution.
+#     * The name of the copyright holder may not be used to endorse or
+#	promote products derived from this software without specific prior
+#	written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS ``AS IS''
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+# ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDERS AND CONTRIBUTORS BE
+# LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+# CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+# INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+# CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+# ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
+# THE POSSIBILITY OF SUCH DAMAGE.
+
+from __future__ import unicode_literals
+import Bibliography
+import BibEntry
+import BibTeX
+import string
+import sys
+import optparse
+import datetime
+import bibtexparser
+from doi2bib.crossref import get_bib
+from title2bib.crossref import get_bib_from_title
+
+## parse switches
+usage = '''usage: %prog [bibfiles]
+
+:: Clean bib entries, and writes to "clean.bib".'''
+p = optparse.OptionParser(usage)
+p.set_defaults(resolve=False)
+(opts, args) = p.parse_args()
+globals().update(opts.__dict__)
+
+if len(args) == 0 and sys.stdin.isatty():
+	p.print_help()
+	sys.exit(0)
+
+if args:
+	for f in args:
+		bib = BibTeX.BibTeX()
+		n = bib.parseFile(f)
+		sys.stderr.write( "%d records read from %s\n" % (n, f) )
+
+else:
+	bib = BibTeX.BibTeX()
+	bib.parseFile()
+
+	sys.stderr.write( "%d records read from stdin\n" % len(bib) )
+
+class DiscontinueError(Exception):
+        pass
+
+def yesno():
+        usrin = ''
+        while usrin.lower() not in {'y', 'n'}:
+                usrin = raw_input('y(yes)|n(no)')
+        return usrin.lower()
+try:
+        for idx, entry in enumerate(bib):
+
+                sys.stderr.write('\n\nEntry:       %d/%d\n' % (idx+1, len(bib)))
+                entry_key = entry.getKey()
+
+                # Avoid some types
+                if entry.getRefType().lower() == {'book', 'misc', 'unpublished'}:
+                        print >> sys.stderr, "%15s: is %s, skipping" % (entry_key, entry.getRefType())
+                        continue
+
+
+                print >> sys.stderr, "Current:"
+                entry.write(file=sys.stderr)
+
+                # Get bib entry from web
+                sys.stderr.write('searching ... ')
+                found = False
+                if entry.hasDoi():
+                        found, bib_recieved = get_bib(unicode(entry.getDoi(), 'utf-8'))
+                elif entry.hasTitle():
+                        found, bib_recieved = get_bib_from_title(unicode(entry.getTitle(), 'utf-8'))
+                else:
+                        print >> sys.stderr, "done\n%15s: has no title or doi\n" % entry.getKey()
+
+                if not found:
+                        print >> sys.stderr, "%15s: could not find bib entry from web" % entry_key
+                        continue
+
+                sys.stderr.write('done\n')
+
+                # Parse revieved entry
+                print >> sys.stderr, "Recieved:\n%s\n" % bib_recieved
+                bib_recieved = bibtexparser.loads(bib_recieved).entries[0]  # assume only 1 entry
+                if entry.getRefType() != bib_recieved['ENTRYTYPE']:
+                        print >> sys.stderr, "%15s: field type doesn't match recieved, switch?" % entry_key
+                        print >> sys.stderr, "    Current type:  %s" % entry.getRefType()
+                        print >> sys.stderr, "    Recieved type: %s" % bib_recieved['ENTRYTYPE']
+                        if yesno() == 'y':
+                                try:
+                                        entry.setType(bib_recieved['ENTRYTYPE'])
+                                except AttributeError, error:
+                                        print >> sys.stderr, error
+
+                # Check fields that don't exist
+                for field_recieved in bib_recieved.keys():
+                        if field_recieved in {'ID', 'ENTRYTYPE'}:
+                                continue
+                        if not entry.hasField(field_recieved):
+                                print >> sys.stderr, '%15s: does not have field "%s", include?' % (entry_key, field_recieved)
+                                if yesno() == 'y':
+                                        print >> sys.stderr, "keeping", field_recieved
+                                        entry.setField(field_recieved, bib_recieved[field_recieved])
+                                else:
+                                        print >> sys.stderr, "ignoring", field_recieved
+
+                missing = 0
+                for missing_field in entry.check():
+                        print >> sys.stderr, '%15s: missing field "%s"' % (entry_key, missing_field)
+                        missing += 1
+                if missing > 0:
+                        print >> sys.stderr, "Continue?"
+                        if yesno() == 'n':
+                                raise DiscontinueError("")
+
+except KeyboardInterrupt:
+        print >> sys.stderr, "User stopped"
+
+except DiscontinueError:
+        print >> sys.stderr, "User stopped"
+        
+except:
+        print >> sys.stderr, "-"*70
+        traceback.print_exc(file=sys.stderr)
+        print >> sys.stderr, "-"*70
+        
+# output results
+with open('clean.bib', 'w') as out:
+        for entry in bib:
+                entry.write(file=out)
+print >> sys.stderr, "saved clean.bib"
