@@ -368,8 +368,10 @@ class BibEntry:
 	def setField(self, key, value):
 
                 def stripzero(str):
-                        while str[0] == '0':
-                                str = str[1:]
+                        # strip leading zeros from string
+                        if len(str) > 0:
+                                while str[0] == '0':
+                                        str = str[1:]
                         return str
                 
 		key = key.capitalize();
