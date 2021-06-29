@@ -650,8 +650,13 @@ alltypes = ('article', 'book', 'booklet', 'inbook', 'incollection',
 # list of additional fields, ignored by the standard BibTeX styles
 ign = ('crossref', 'code', 'url', 'annote', 'abstract');
 
-# lists of required and optional fields for each reference type
+# list of types that require doi
+doireqtypes = {
+        'article', 'inbook', 'incollection',
+	'inproceedings', 'proceedings',
+}
 
+# lists of required and optional fields for each reference type
 required_fields = {
   'article' :		['Author', 'Title', 'Journal', 'Year'],
   'book' :		['Author', 'Title', 'Publisher', 'Year'],
