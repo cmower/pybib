@@ -312,6 +312,9 @@ class BibEntry:
 	def getMonth(self):
                 return self.fieldDict('_month', -1)
 
+        def getDay(self):
+                return self.fieldDict('_day', -1)
+
 	monthdict = {
 		'january' : 1,
 		'february' : 2,
