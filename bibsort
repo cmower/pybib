@@ -89,8 +89,6 @@ else:
     print >> sys.stderr, "Did not recognize given sort method '%s'!" % sortMethod
     sys.exit(1)
 
-outbib = BibTeX.BibTeX();
-
 if args:
 
 	for f in args:
