@@ -61,23 +61,23 @@ class BibTeXEntry(BibEntry.BibEntry):
 			file.write("	%s = " % rk.lower() )
 
 			if rk in ['Author', 'Editor']:
-				file.write('"%s"' % ' and '.join(value) )
+				file.write('{%s}' % ' and '.join(value) )
 			elif rk == 'Month':
 				if value:
-					file.write('"%s"' % value )
+					file.write('{%s}' % value )
 				else:
 					# value = self.getMonthName()
                                         value = self.getMonth()  # some compilers require integer to ensure ordering is correct
 					# file.write("%s" % value[0:3].lower() )
-                                        file.write('"%d"' % value)
+                                        file.write('{%d}' % value)
                         elif rk == 'Day':
-                                file.write('"%d"' % value)
+                                file.write('{%d}' % value)
 			else:
 				# is it an abbrev?
 				if value in self.bibliography.abbrevDict:
 					file.write("%s" % value )
 				else:
-					file.write('"%s"' % value )
+					file.write('{%s}' % value )
 
 			# add comma to all fields
 			file.write(",\n")
