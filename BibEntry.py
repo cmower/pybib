@@ -609,7 +609,7 @@ class BibEntry:
         # Other methods, added by C. E. Mower, 2021
 
         def hasDoi(self):
-                return 'doi' in map(lambda x: x.lower(), self.fieldDict.keys())
+                return 'Doi' in self.fieldDict.keys()
 
         def needsDoi(self):
                 return self.getRefType() in doireqtypes
