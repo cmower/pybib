@@ -39,6 +39,12 @@ bibnames	display author names and number of occurences
 
 peter corke  2007.
 
+## Updates
+
+bibclean   Clean bib entries.
+
+Christopher E. Mower, 2021
+
 ## Description as appears on CTAN
 
 Pybib provides a set of command line utilities (written in Python) to check, merge, sort, filter, and convert BibTeX files. Also include a tool to lookup references on Google scholar and insert the URL into the file.
