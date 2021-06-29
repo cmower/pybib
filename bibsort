@@ -45,7 +45,7 @@ usage = '''usage: %prog [options] [bibfiles]
 :: Sort bibliographies in chronological order'''
 p = optparse.OptionParser(usage)
 p.add_option('--method', dest='sortMethod',
-             help="Specify how to sort entries [default is 'year']. All options: 'year', 'key'.")
+             help="Specify how to sort entries [default is 'date']. All options: 'date', 'key'.")
 p.add_option('--reverse', dest='reverseSort', action='store_true',
              help='sort into ascending data order (old at top)');
 p.add_option('--resolve', dest='resolve', action='store_true',
