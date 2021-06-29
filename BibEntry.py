@@ -310,10 +310,10 @@ class BibEntry:
 
 	# return month ordinal in range 1 to 12
 	def getMonth(self):
-                return self.fieldDict('_month', -1)
+                return self.fieldDict.get('_month', -1)
 
         def getDay(self):
-                return self.fieldDict('_day', -1)
+                return self.fieldDict.get('_day', -1)
 
 	monthdict = {
 		'january' : 1,
