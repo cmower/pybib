@@ -1,10 +1,13 @@
 # Pybib
 
-Pybib provides a set of command line utilities (written in Python) to check, merge, sort, filter, and convert BibTeX files. Original code by [Peter Corke](http://petercorke.com/wordpress/) hosted at [CTAN](https://ctan.org/pkg/pybib?lang=en). This repository contains modified code by C. E. Mower.
+Pybib provides a set of command line utilities (written in Python 2) to check,
+merge, sort, filter, and convert BibTeX files. Also include a tool to lookup
+references on Google scholar and insert the URL into the file.
 
-The code requires a Python 2 interpreter.
+Original author: [Peter Corke](http://petercorke.com/wordpress/), 2007. See also
+[CTAN](https://ctan.org/pkg/pybib?lang=en).
 
-## Original README by Peter Corke
+## Scripts
 
 BibEntry.py	a general class for a bibliographic entry
 
@@ -34,25 +37,12 @@ bibsort		sort by date, or key
 
 bibsummary	summary of number of entries by type
 
-bibnames	display author names and number of occurences
+bibnames	display author names and number of occurrences
 
-
-peter corke  2007.
-
-## Updates
-
-bibclean   Clean bib entries.
-
-Christopher E. Mower, 2021
-
-## Description as appears on CTAN
-
-Pybib provides a set of command line utilities (written in Python) to check, merge, sort, filter, and convert BibTeX files. Also include a tool to lookup references on Google scholar and insert the URL into the file.
-
-The package builds on the author’s experience writing the earlier tkbibtex; it is hoped that this code is more readily maintainable.
+bibclean    Clean bib entries.
 
 ## Setup
 
 1. `$ git clone https://github.com/cmower/pybib.git`
-1. On Linux/Mac add `export BIBPATH="/path/to/pybib"; export PATH=$PATH:$BIBPATH` to your `.bashrc`/`.bash_profile`. If you use Windows set the environment variables `BIBPATH` and update your `PATH` variable to contain `BIBPATH` (untested for Windows).
+1. Add `/path/to/pybib` to your path.
 1. `$ pip2 install doi2bib`
